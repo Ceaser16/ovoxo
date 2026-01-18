@@ -103,7 +103,7 @@ trait AgentManager
         $agent    = User::agent()
             ->where('is_deleted', Status::NO)
             ->where('parent_id', $user->id)
-            ->findOrFailWithApi("agent", $id);
+            ->findOrFailWithApi($id, "agent");
 
         $pageTitle     = "Edit Agent - " . $agent->username;
         $view = "Template::user.agent.edit";
@@ -124,7 +124,7 @@ trait AgentManager
         $agent = User::agent()
             ->where('is_deleted', Status::NO)
             ->where('parent_id', $user->id)
-            ->findOrFailWithApi("agent", $id);
+            ->findOrFailWithApi($id, "agent");
 
         $agent->firstname = $request->firstname;
         $agent->lastname  = $request->lastname;
@@ -144,7 +144,7 @@ trait AgentManager
         $agent = User::agent()
             ->where('is_deleted', Status::NO)
             ->where('parent_id', $user->id)
-            ->findOrFailWithApi("agent", $id);
+            ->findOrFailWithApi($id, "agent");
 
         $permissions         = AgentPermission::get();
         $existingPermissions = $agent->agentPermissions;
@@ -170,7 +170,7 @@ trait AgentManager
         $agent = User::agent()
             ->where('is_deleted', Status::NO)
             ->where('parent_id', $user->id)
-            ->findOrFailWithApi("agent", $id);
+            ->findOrFailWithApi($id, "agent");
 
         $permissions = AgentPermission::whereIn('id', $request->permissions ?? [])->pluck('id')->toArray();
         $agent->agentPermissions()->sync($permissions);
@@ -185,7 +185,7 @@ trait AgentManager
         $agent = User::agent()
             ->where('is_deleted', Status::NO)
             ->where('parent_id', $user->id)
-            ->findOrFailWithApi("agent", $id);
+            ->findOrFailWithApi($id, "agent");
 
         $agent->is_deleted = Status::YES;
         $agent->save();

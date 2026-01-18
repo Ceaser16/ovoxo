@@ -198,7 +198,7 @@ trait ContactManager
 
     public function deleteContact($id)
     {
-        $contact = Contact::where('user_id', getParentUser()->id)->findOrFailWithApi('contact', $id);
+        $contact = Contact::where('user_id', getParentUser()->id)->findOrFailWithApi($id, 'contact');
 
         if ($contact->conversation && $contact->conversation->messages()->count() > 0) {
             $notify = 'Unable to delete ' . $this->module . ' with messages';

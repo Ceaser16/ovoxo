@@ -43,7 +43,7 @@ trait ContactListManager
 
         if ($id) {
             $message     = "Contact list updated successfully";
-            $contactList = ContactList::where('user_id', $user->id)->findOrFailWithApi("contact list", $id);
+            $contactList = ContactList::where('user_id', $user->id)->findOrFailWithApi($id, "contact list");
         } else {
             $message     = "Contact list created successfully";
             $contactList = new ContactList();
@@ -63,7 +63,7 @@ trait ContactListManager
     public function view($id)
     {
         $user        = getParentUser();
-        $contactList = ContactList::where('user_id', $user->id)->with('contact')->findOrFailWithApi("contact list", $id);
+        $contactList = ContactList::where('user_id', $user->id)->with('contact')->findOrFailWithApi($id, "contact list");
         $contacts    = ContactListContact::withWhereHas('contact')
             ->searchable(['contact:mobile', 'contact:firstname', 'contact:lastname'])
             ->where('contact_list_id', $contactList->id)
@@ -91,7 +91,7 @@ trait ContactListManager
         ]);
 
         $user        = getParentUser();
-        $contactList = ContactList::where('user_id', $user->id)->findOrFailWithApi("contact list", $id);
+        $contactList = ContactList::where('user_id', $user->id)->findOrFailWithApi($id, "contact list");
         $newContacts = [];
 
         $userContacts = Contact::whereIn('id', $request->contacts)->where('user_id', $user->id)->pluck('id')->toArray() ?? [];
@@ -113,7 +113,7 @@ trait ContactListManager
 
     public function delete($id)
     {
-        $contactList = ContactList::where('user_id', getParentUser()->id)->findOrFailWithApi("contact list", $id);
+        $contactList = ContactList::where('user_id', getParentUser()->id)->findOrFailWithApi($id, "contact list");
 
         if ($contactList->contact()->count()) {
             $message = "This list cannot be deleted because it is associated with one or more contacts";
@@ -129,7 +129,7 @@ trait ContactListManager
     {
         $contactListContact = ContactListContact::withWhereHas('contact', function ($q) {
             $q->where('user_id', getParentUser()->id);
-        })->findOrFailWithApi("contact", $id);
+        })->findOrFailWithApi($id, "contact");
         $contactListContact->delete();
 
         $message = "Contact removed from contact list";

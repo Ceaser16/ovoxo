@@ -40,7 +40,7 @@ trait ContactTagManager
 
         if ($id) {
             $message    = "Contact tag updated successfully";
-            $contactTag = ContactTag::where('user_id', $user->id)->findOrFailWithApi("contact tag", $id);
+            $contactTag = ContactTag::where('user_id', $user->id)->findOrFailWithApi($id, "contact tag");
         } else {
             $message    = "Contact tag created successfully";
             $contactTag = new ContactTag();
@@ -58,7 +58,7 @@ trait ContactTagManager
 
     public function deleteTag($id)
     {
-        $contactTag = ContactTag::where('user_id', getParentUser()->id)->findOrFailWithApi("contact tag", $id);
+        $contactTag = ContactTag::where('user_id', getParentUser()->id)->findOrFailWithApi($id, "contact tag");
 
         if ($contactTag->contacts->count()) {
             $message = "This tag cannot be deleted because it is associated with one or more contacts";

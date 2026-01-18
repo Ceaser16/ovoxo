@@ -104,7 +104,7 @@ trait WhatsappAccountManager
     public function whatsappAccountVerificationCheck($accountId)
     {
         $user            = getParentUser();
-        $whatsappAccount = WhatsappAccount::where('user_id', $user->id)->findOrFailWithApi("whatsapp account", $accountId);
+        $whatsappAccount = WhatsappAccount::where('user_id', $user->id)->findOrFailWithApi($accountId, "whatsapp account");
 
         try {
             $whatsappData = $this->verifyWhatsappCredentials($whatsappAccount->whatsapp_business_account_id, $whatsappAccount->access_token);
@@ -127,7 +127,7 @@ trait WhatsappAccountManager
     public function whatsappAccountConnect($id)
     {
         $user                        = getParentUser();
-        $whatsappAccount             = WhatsappAccount::where('user_id', $user->id)->findOrFailWithApi("whatsapp account", $id);
+        $whatsappAccount             = WhatsappAccount::where('user_id', $user->id)->findOrFailWithApi($id, "whatsapp account");
         $whatsappAccount->is_default = Status::YES;
         $whatsappAccount->save();
 
@@ -144,7 +144,7 @@ trait WhatsappAccountManager
         ]);
 
         $user            = getParentUser();
-        $whatsappAccount = WhatsappAccount::where('user_id', $user->id)->findOrFailWithApi("whatsapp account", $accountId);
+        $whatsappAccount = WhatsappAccount::where('user_id', $user->id)->findOrFailWithApi($accountId, "whatsapp account");
 
         try {
             $whatsappData = $this->verifyWhatsappCredentials($whatsappAccount->whatsapp_business_account_id, $request->meta_access_token);
